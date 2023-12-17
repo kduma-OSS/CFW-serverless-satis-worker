@@ -1,0 +1,20 @@
+name = "<name>"
+main = "src/index.ts"
+compatibility_date = "2023-12-06"
+
+[vars]
+PUBLIC_ACCESS_TO_INDEX = false
+PUBLIC_ACCESS_TO_JSON = false
+CHECK_FILE_RESTRICTIONS = false
+
+[[routes]]
+pattern = "<domain>"
+custom_domain = true
+
+[[kv_namespaces]]
+binding = "AUTH"
+id = "<kv_id>"
+
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "<bucket_name>"

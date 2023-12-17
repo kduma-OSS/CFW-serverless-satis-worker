@@ -1,0 +1,23 @@
+{
+  "name": "serverless-satis-worker",
+  "version": "0.0.0",
+  "description": "Serverless Satis-based private Composer PHP package repository hosted on CloudFlare R2 and Workers",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev"
+  },
+	"author": "Krystian Duma",
+	"license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231121.0",
+    "itty-router": "^3.0.12",
+    "typescript": "^5.0.4",
+    "wrangler": "^3.0.0"
+  },
+	"bugs": {
+		"url": "https://github.com/kduma-OSS/CFW-serverless-satis-worker/issues"
+	},
+	"homepage": "https://github.com/kduma-OSS/CFW-serverless-satis-worker#readme"
+}
