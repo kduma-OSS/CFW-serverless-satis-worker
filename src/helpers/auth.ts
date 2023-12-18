@@ -53,6 +53,12 @@ async function getUserFormStore(username: string, password: string, env: Env): P
 		return false;
 	}
 
+	if(env.STORE_PASSWORDS_HASHED) {
+		const myDigest = await crypto.subtle.digest("SHA-256", encoder.encode(password));
+		const hash= Array.from(new Uint8Array(myDigest));
+		password = hash.map(b => b.toString(16).padStart(2, '0')).join('');
+	}
+
 	if (!timingSafeEqual(storedPassword, password)) {
 		return false;
 	}
