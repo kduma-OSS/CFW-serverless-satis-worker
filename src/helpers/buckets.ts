@@ -86,8 +86,12 @@ export default {
 		})
 	},
 	async getPermissions(pathname: string, env: Env): Promise<string[] | null> {
-		let key = '.tags' + pathname + '.json';
-		const object = await env.R2_BUCKET.get(key)
+		// @ts-ignore
+		return await this.loadJson('/.tags' + pathname + '.json', env);
+	},
+	async loadJson(pathname: string, env: Env): Promise<object | null> {
+		let objectName = pathname.slice(1)
+		const object = await env.R2_BUCKET.get(objectName)
 
 		if (object === null) {
 			return null;

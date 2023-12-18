@@ -79,6 +79,76 @@ export default {
 			}
 		}
 
+		if(env.CHECK_EXTRA_JSON_RESTRICTIONS && url.pathname.startsWith('/p2/') && url.pathname.endsWith('.json')) {
+			let json: any = await bucketsHelper.loadJson(url.pathname, env);
+
+			if(!json) {
+				return bucketsHelper.objectNotFound(url.pathname);
+			}
+
+			Object.keys(json['packages']).forEach(function(key, index) {
+				json['packages'][key] = json['packages'][key].map((version: any) => {
+					if (!('extra' in version)) {
+						return version;
+					}
+
+					if (!('s3-satis-file-restrictions' in version['extra'])) {
+						return version;
+					}
+
+					if(user !== null) {
+						let hasAccess = user.permissions.includes('*');
+						version['extra']['s3-satis-file-restrictions'].forEach((p: string) => {
+							// @ts-ignore
+							if(user.permissions.includes(p)) {
+								hasAccess = true;
+							}
+						});
+
+						if (!hasAccess) {
+							user.permissions.forEach((p: string) => {
+								if(!p.includes('*')) {
+									return;
+								}
+								let pattern = '^' + p.replace('*', '.*') + '$';
+								// @ts-ignore
+								version['extra']['s3-satis-file-restrictions'].forEach((p: string) => {
+									// @ts-ignore
+									if(p.match(pattern)) {
+										hasAccess = true;
+									}
+								});
+							});
+						}
+
+						if(!hasAccess) {
+							return null;
+						}
+					}
+
+					delete version['extra']['s3-satis-file-restrictions'];
+
+					if(Object.keys(version['extra']).length == 0) {
+						delete version['extra'];
+					}
+
+					return version;
+				}).filter((version: any) => {
+					return version !== null;
+				});
+
+				if(json['packages'][key].length == 0) {
+					delete json['packages'][key];
+				}
+			});
+
+			return new Response(JSON.stringify(json, null, 2), {
+				headers: {
+					'content-type': 'application/json',
+				},
+			});
+		}
+
 		return bucketsHelper.fetch(request, env);
 	},
 };
