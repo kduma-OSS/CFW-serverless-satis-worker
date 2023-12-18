@@ -7,6 +7,7 @@ PUBLIC_ACCESS_TO_INDEX = false
 PUBLIC_ACCESS_TO_JSON = false
 CHECK_FILE_RESTRICTIONS = false
 STORE_PASSWORDS_HASHED = false
+ENABLE_USER_ENDPOINT = false
 
 [[routes]]
 pattern = "<domain>"

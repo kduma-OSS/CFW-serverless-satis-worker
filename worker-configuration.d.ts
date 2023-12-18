@@ -7,4 +7,5 @@ interface Env {
 	PUBLIC_ACCESS_TO_JSON: boolean;
 	CHECK_FILE_RESTRICTIONS: boolean;
 	STORE_PASSWORDS_HASHED: boolean;
+	ENABLE_USER_ENDPOINT: boolean;
 }

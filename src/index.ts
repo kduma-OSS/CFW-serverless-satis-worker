@@ -15,7 +15,6 @@ export default {
 			authorizationRequired = false;
 		}
 
-
 		if(authorizationRequired) {
 			let ba = await authHelper.basicAuth(request, env, ctx)
 			if (ba instanceof Response) {
@@ -23,6 +22,14 @@ export default {
 			}
 
 			user = ba;
+		}
+
+		if(env.ENABLE_USER_ENDPOINT && url.pathname == '/user.json') {
+			return new Response(JSON.stringify(user, null, 2), {
+				headers: {
+					'content-type': 'application/json',
+				},
+			});
 		}
 
 		if(url.pathname.startsWith('/.checksums/') || url.pathname.startsWith('/.tags/')) {
