@@ -57,9 +57,10 @@ async function getUserFormStore(username: string, password: string, env: Env): P
 		return false;
 	}
 
+	let permissionsList = permissions ? permissions.split(",") : []
 	return {
 		username,
-		permissions: permissions.split(","),
+		permissions: permissionsList,
 	};
 }
 

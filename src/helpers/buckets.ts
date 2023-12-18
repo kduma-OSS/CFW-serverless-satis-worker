@@ -85,7 +85,7 @@ export default {
 			}
 		})
 	},
-	async getPermissions(pathname: string, env: Env) {
+	async getPermissions(pathname: string, env: Env): Promise<string[] | null> {
 		let key = '.tags' + pathname + '.json';
 		const object = await env.R2_BUCKET.get(key)
 

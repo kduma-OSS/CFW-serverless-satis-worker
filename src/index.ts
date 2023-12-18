@@ -40,9 +40,34 @@ export default {
 				return authHelper.getForbiddenResponse();
 			}
 
-			// @ts-ignore
-			let commonPermissions = permissions.filter((p: string) => user.permissions.includes(p));
-			if(commonPermissions.length == 0) {
+			let hasAccess = user.permissions.includes('*');
+			permissions.forEach((p: string) => {
+				// @ts-ignore
+				if(user.permissions.includes(p)) {
+					hasAccess = true;
+				}
+			});
+
+			if (!hasAccess) {
+				user.permissions.forEach((p: string) => {
+					if(!p.includes('*')) {
+						return;
+					}
+
+					let pattern = '^' + p.replace('*', '.*') + '$';
+
+					// @ts-ignore
+					permissions.forEach((p: string) => {
+						// @ts-ignore
+						if(p.match(pattern)) {
+							hasAccess = true;
+						}
+					});
+
+				});
+			}
+
+			if(!hasAccess) {
 				return authHelper.getForbiddenResponse();
 			}
 		}
